@@ -18,7 +18,7 @@ type Props = {
 export function SummaryTable({ section }: Props) {
   return (
     <div className="card mb-6 overflow-hidden">
-      <div className="px-5 py-3 border-b border-cryo-500/40">
+      <div className="px-4 sm:px-5 py-3 border-b border-cryo-500/40">
         <h3 className="text-sm font-semibold text-cryo-100 tracking-wide">{section.label}</h3>
       </div>
       <div className="overflow-x-auto">

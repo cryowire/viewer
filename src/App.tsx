@@ -81,15 +81,16 @@ export function App() {
       onDrop={handleDrop}
     >
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-cryo-500/50 bg-cryo-800/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="h-16 flex items-center gap-4">
+      <header className="sticky top-0 z-10 border-b border-cryo-500/50 backdrop-blur-xl" style={{ backgroundColor: "rgba(22,28,40,0.95)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 py-2 sm:py-0 sm:h-16">
             {/* Logo */}
             <div className="flex items-center gap-2 shrink-0">
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="cryo-wiring"
-                className="h-20 w-20 object-cover -my-6"
+                className="h-12 object-contain"
+                style={{ clipPath: "inset(15% 10% 15% 10%)", margin: "-0.25rem 0" }}
               />
               <span className="font-semibold text-sm tracking-tight text-cryo-50">
                 cryo-wiring
@@ -97,8 +98,8 @@ export function App() {
             </div>
 
             {/* URL bar */}
-            <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-2">
-              <div className="flex-1 relative">
+            <form onSubmit={handleSubmit} className="flex-1 min-w-0 flex items-center gap-2">
+              <div className="flex-1 min-w-0 relative">
                 <input
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
@@ -118,16 +119,16 @@ export function App() {
                   </svg>
                 ) : (
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 )}
-                Explore
+                <span className="hidden sm:inline">Explore</span>
               </button>
               <label className="btn inline-flex items-center gap-1.5 shrink-0 cursor-pointer">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
-                File
+                <span className="hidden sm:inline">File</span>
                 <input
                   type="file"
                   accept=".yaml,.yml"
@@ -144,7 +145,7 @@ export function App() {
       </header>
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {error && (
           <div
             className="mb-6 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-sm text-red-400"

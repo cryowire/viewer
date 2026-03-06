@@ -28,6 +28,7 @@ export type ResolvedLine = {
   line_id: string;
   qubit?: string;
   qubits?: string[];
+  representative?: boolean;
   stages: Record<string, ResolvedComponent[]>;
 };
 

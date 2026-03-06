@@ -1,4 +1,5 @@
 import type { CooldownData } from "../types";
+import { WiringDiagram } from "./WiringDiagram";
 import { SummaryTable } from "./SummaryTable";
 import { LineDetail } from "./LineDetail";
 
@@ -20,10 +21,10 @@ export function CooldownView({ data }: Props) {
     <div style={{ animation: "slideUp 250ms ease-out" }}>
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold tracking-tight text-cryo-50 font-mono">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-cryo-50 font-mono">
           {m.cooldown_id}
           {m.date && (
-            <span className="text-cryo-300/60 font-normal text-sm ml-3 font-sans">{m.date}</span>
+            <span className="text-cryo-300/60 font-normal text-xs sm:text-sm ml-2 sm:ml-3 font-sans">{m.date}</span>
           )}
         </h2>
         {metaTags.length > 0 && (
@@ -49,15 +50,20 @@ export function CooldownView({ data }: Props) {
         )}
       </div>
 
+      {/* Wiring diagram */}
+      <div style={{ animation: `slideUp 250ms ease-out 100ms both` }}>
+        <WiringDiagram data={data} />
+      </div>
+
       {/* Summary tables */}
       {data.summary.sections.map((section, i) => (
-        <div key={section.label} style={{ animation: `slideUp 250ms ease-out ${100 + i * 60}ms both` }}>
+        <div key={section.label} style={{ animation: `slideUp 250ms ease-out ${160 + i * 60}ms both` }}>
           <SummaryTable section={section} />
         </div>
       ))}
 
       {/* Line detail browser */}
-      <div style={{ animation: `slideUp 250ms ease-out ${100 + data.summary.sections.length * 60}ms both` }}>
+      <div style={{ animation: `slideUp 250ms ease-out ${160 + data.summary.sections.length * 60}ms both` }}>
         <LineDetail data={data} />
       </div>
     </div>
