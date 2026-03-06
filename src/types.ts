@@ -1,0 +1,57 @@
+export type CooldownData = {
+  metadata: {
+    cooldown_id: string;
+    date: string;
+    fridge: string;
+    operator?: string;
+    purpose?: string;
+    notes?: string;
+  };
+  chip?: {
+    name: string;
+    num_qubits: number;
+    qubits_per_readout_line?: number;
+  } | null;
+  control: WiringSection;
+  readout_send: WiringSection;
+  readout_return: WiringSection;
+  summary: {
+    sections: SummarySection[];
+  };
+};
+
+export type WiringSection = {
+  lines: ResolvedLine[];
+};
+
+export type ResolvedLine = {
+  line_id: string;
+  qubit?: string;
+  qubits?: string[];
+  stages: Record<string, ResolvedComponent[]>;
+};
+
+export type ResolvedComponent = {
+  type: string;
+  manufacturer: string;
+  model: string;
+  serial?: string;
+  summary_label?: string;
+  value_dB?: number;
+  gain_dB?: number;
+  filter_type?: string;
+  amplifier_type?: string;
+};
+
+export type SummarySection = {
+  label: string;
+  lines: SummaryLine[];
+};
+
+export type SummaryLine = {
+  line_id: string;
+  qubits: string;
+  total_atten: number;
+  total_gain: number;
+  stage_components: Record<string, string[]>;
+};
