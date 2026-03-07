@@ -158,7 +158,47 @@ export function WiringDiagram({ data }: Props) {
           style={{ minWidth: svgW, display: "block", margin: "0 auto" }}
           className="select-none"
         >
-          {/* No defs needed - arrows drawn as polygons */}
+          {/* Pulse animation defs */}
+          <defs>
+            {/* Control (solid) - blue */}
+            <radialGradient id="pulse-core-ctrl" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#93c5fd" stopOpacity="1" />
+              <stop offset="60%" stopColor="#60a5fa" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="pulse-tail-ctrl-down" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#60a5fa" stopOpacity="0" />
+              <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.5" />
+            </linearGradient>
+            <linearGradient id="pulse-tail-ctrl-up" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#60a5fa" stopOpacity="0" />
+              <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.5" />
+            </linearGradient>
+            {/* Readout Send (dashed) - violet */}
+            <radialGradient id="pulse-core-rs" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#c4b5fd" stopOpacity="1" />
+              <stop offset="60%" stopColor="#a78bfa" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="pulse-tail-rs-down" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#a78bfa" stopOpacity="0" />
+              <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.5" />
+            </linearGradient>
+            {/* Readout Return (dashdot) - emerald */}
+            <radialGradient id="pulse-core-rr" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#6ee7b7" stopOpacity="1" />
+              <stop offset="60%" stopColor="#34d399" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="pulse-tail-rr-up" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#34d399" stopOpacity="0" />
+              <stop offset="100%" stopColor="#34d399" stopOpacity="0.5" />
+            </linearGradient>
+            {/* Glow filter */}
+            <filter id="pulse-blur" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+            </filter>
+          </defs>
 
           {/* Stage bands */}
           {STAGES.map((stage, i) => {
@@ -287,6 +327,87 @@ export function WiringDiagram({ data }: Props) {
                   strokeWidth="1"
                   strokeLinecap="round"
                 />
+
+                {/* Pulse animation */}
+                {(() => {
+                  const isUp = direction === "up";
+                  const sectionKey = style === "solid" ? "ctrl" : style === "dashed" ? "rs" : "rr";
+                  const coreId = `pulse-core-${sectionKey}`;
+                  const tailId = `pulse-tail-${sectionKey}-${isUp ? "up" : "down"}`;
+                  const dur = 5;
+                  const tailLen = 18;
+
+                  return [0, 1, 2].map((dot) => {
+                    const delay = dot * (dur / 3);
+                    const yFrom = isUp ? yBottom : yTop;
+                    const yTo = isUp ? yTop : yBottom;
+                    return (
+                      <g key={`pulse-${dot}`}>
+                        {/* Tail */}
+                        <rect width="1.5" height={tailLen} rx="0.75" fill={`url(#${tailId})`}>
+                          <animate
+                            attributeName="x"
+                            values={`${x - 0.75};${x - 0.75}`}
+                            dur={`${dur}s`}
+                            begin={`${delay}s`}
+                            repeatCount="indefinite"
+                          />
+                          <animate
+                            attributeName="y"
+                            values={isUp ? `${yFrom};${yTo - tailLen}` : `${yFrom - tailLen};${yTo - tailLen}`}
+                            dur={`${dur}s`}
+                            begin={`${delay}s`}
+                            repeatCount="indefinite"
+                          />
+                          <animate
+                            attributeName="opacity"
+                            values="0;0.6;0.6;0"
+                            keyTimes="0;0.08;0.88;1"
+                            dur={`${dur}s`}
+                            begin={`${delay}s`}
+                            repeatCount="indefinite"
+                          />
+                        </rect>
+                        {/* Outer glow */}
+                        <circle cx={x} r="5" fill={`url(#${coreId})`} filter="url(#pulse-blur)">
+                          <animate
+                            attributeName="cy"
+                            values={`${yFrom};${yTo}`}
+                            dur={`${dur}s`}
+                            begin={`${delay}s`}
+                            repeatCount="indefinite"
+                          />
+                          <animate
+                            attributeName="opacity"
+                            values="0;0.5;0.5;0"
+                            keyTimes="0;0.08;0.88;1"
+                            dur={`${dur}s`}
+                            begin={`${delay}s`}
+                            repeatCount="indefinite"
+                          />
+                        </circle>
+                        {/* Core dot */}
+                        <circle cx={x} r="2" fill={`url(#${coreId})`}>
+                          <animate
+                            attributeName="cy"
+                            values={`${yFrom};${yTo}`}
+                            dur={`${dur}s`}
+                            begin={`${delay}s`}
+                            repeatCount="indefinite"
+                          />
+                          <animate
+                            attributeName="opacity"
+                            values="0;1;1;0"
+                            keyTimes="0;0.08;0.88;1"
+                            dur={`${dur}s`}
+                            begin={`${delay}s`}
+                            repeatCount="indefinite"
+                          />
+                        </circle>
+                      </g>
+                    );
+                  });
+                })()}
 
                 {/* Stage dots + components */}
                 {STAGES.map((stage) => {
