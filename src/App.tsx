@@ -4,7 +4,7 @@ import type { CooldownData } from "./types";
 import { CooldownView } from "./components/CooldownView";
 
 const DEFAULT_URL =
-  "https://raw.githubusercontent.com/cryo-wiring/spec/refs/heads/main/examples/cooldown.yaml";
+  "https://raw.githubusercontent.com/cryowire/spec/refs/heads/main/examples/cooldown.yaml";
 
 function parseYaml(text: string): CooldownData {
   const parsed = load(text) as CooldownData;
@@ -93,12 +93,12 @@ export function App() {
             <div className="flex items-center gap-2 shrink-0">
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
-                alt="cryo-wiring"
+                alt="cryowire"
                 className="h-12 object-contain"
                 style={{ clipPath: "inset(15% 10% 15% 10%)", margin: "-0.25rem 0" }}
               />
               <span className="font-semibold text-sm tracking-tight text-cryo-50">
-                cryo-wiring
+                cryowire
               </span>
             </div>
 
@@ -174,7 +174,7 @@ export function App() {
           <div className="flex flex-col items-center justify-center min-h-[50vh] text-cryo-300 gap-3">
             <img
               src={`${import.meta.env.BASE_URL}logo.png`}
-              alt="cryo-wiring"
+              alt="cryowire"
               className="w-20 h-20 object-contain opacity-40 mb-2"
             />
             <span className="text-sm">
