@@ -2,7 +2,7 @@ export type CooldownData = {
   metadata: {
     cooldown_id: string;
     date: string;
-    fridge: string;
+    cryo: string;
     operator?: string;
     purpose?: string;
     notes?: string;

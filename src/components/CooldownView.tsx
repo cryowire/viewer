@@ -11,7 +11,7 @@ export function CooldownView({ data }: Props) {
   const m = data.metadata;
 
   const metaTags = [
-    m.fridge && { label: "Fridge", value: m.fridge },
+    m.cryo && { label: "Cryo", value: m.cryo },
     data.chip && { label: "Chip", value: `${data.chip.name} (${data.chip.num_qubits}Q)` },
     m.operator && { label: "Operator", value: m.operator },
     m.purpose && { label: "Purpose", value: m.purpose },

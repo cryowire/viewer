@@ -14,8 +14,13 @@ function parseYaml(text: string): CooldownData {
   return parsed;
 }
 
+function getInitialUrl(): string {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("url") || DEFAULT_URL;
+}
+
 export function App() {
-  const [url, setUrl] = useState(DEFAULT_URL);
+  const [url, setUrl] = useState(getInitialUrl);
   const [data, setData] = useState<CooldownData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -71,7 +76,7 @@ export function App() {
   );
 
   useEffect(() => {
-    fetchUrl(DEFAULT_URL);
+    fetchUrl(getInitialUrl());
   }, [fetchUrl]);
 
   return (
